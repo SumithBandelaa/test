@@ -132,7 +132,6 @@
     align-items: center;
     flex-wrap: wrap;
     min-height: 80px;
-    position: relative;
   }
 
   .btn-yes {
@@ -176,13 +175,9 @@
     font-size: 1rem;
     font-weight: 300;
     cursor: pointer;
-    transition: border-color 0.2s, color 0.2s, background 0.2s;
-    white-space: nowrap;
-  }
-
-  .btn-no.flying {
+    transition: transform 0.15s, border-color 0.2s, color 0.2s, background 0.2s;
     position: fixed;
-    transition: none;
+    white-space: nowrap;
   }
 
   .btn-no:hover {
@@ -343,12 +338,6 @@
     // Show excuse
     noExcuse.textContent = excuses[(noCount - 1) % excuses.length];
 
-    // On first hover, convert to fixed and fly away
-    if (!noMoved) {
-      noMoved = true;
-      btnNo.classList.add('flying');
-    }
-
     // Move to random position within viewport
     const pad = 80;
     const maxX = window.innerWidth - pad * 2;
@@ -393,8 +382,17 @@
     }
   }
 
-  // No button starts inline, flies away on first hover
+  // Initial No button position (inside card area)
+  function initNoBtn() {
+    const card = document.querySelector('.card');
+    const rect = card.getBoundingClientRect();
+    btnNo.style.left = (rect.left + rect.width * 0.72) + 'px';
+    btnNo.style.top = (rect.top + rect.height * 0.75) + 'px';
+    btnNo.style.transform = 'translate(-50%, -50%)';
+  }
 
+  window.addEventListener('load', initNoBtn);
+  window.addEventListener('resize', initNoBtn);
 </script>
 </body>
 </html>
